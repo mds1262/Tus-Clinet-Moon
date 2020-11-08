@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cddf64b1-e613-4c19-a0b9-faaf813cf3d7" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go Application" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.14.6/libexec" />
+  <component name="GoDepProject">
+    <integration-enabled>true</integration-enabled>
+    <exec-path>/usr/local/bin/dep</exec-path>
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1jB9euS7sTaPlc7RwSWkTjoEWmP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go Application" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.tried.to.enable.integration.dep.integrator" value="true" />
+    <property name="go.vendoring.notification.had.been.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/uploads" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="tus-client" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="catenoid-company/tus-client" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build main.go" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1253" y="-843" key="#Inspections" timestamp="1604636481383">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1253" y="-843" key="#Inspections/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604636481383" />
+    <state x="1365" y="-720" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603330764058">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1365" y="-720" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1603330764058" />
+    <state width="1878" height="358" key="GridCell.Tab.0.bottom" timestamp="1604652686195">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.0.bottom/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652686195" />
+    <state width="1878" height="358" key="GridCell.Tab.0.center" timestamp="1604652686194">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.0.center/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652686194" />
+    <state width="1878" height="358" key="GridCell.Tab.0.left" timestamp="1604652686194">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.0.left/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652686194" />
+    <state width="1878" height="358" key="GridCell.Tab.0.right" timestamp="1604652686195">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.0.right/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652686195" />
+    <state width="1878" height="358" key="GridCell.Tab.1.bottom" timestamp="1604652694397">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.1.bottom/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652694397" />
+    <state width="1878" height="358" key="GridCell.Tab.1.center" timestamp="1604652694397">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.1.center/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652694397" />
+    <state width="1878" height="358" key="GridCell.Tab.1.left" timestamp="1604652694397">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.1.left/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652694397" />
+    <state width="1878" height="358" key="GridCell.Tab.1.right" timestamp="1604652694397">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state width="1878" height="358" key="GridCell.Tab.1.right/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604652694397" />
+    <state x="1180" y="-887" key="SettingsEditor" timestamp="1604471488420">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1180" y="-887" key="SettingsEditor/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604471488420" />
+    <state x="1168" y="-793" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1604638838452">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1168" y="-793" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604638838452" />
+    <state x="759" y="-957" width="1720" height="857" key="dock-window-1" timestamp="1604471651599">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="759" y="-957" width="1720" height="857" key="dock-window-1/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604471651599" />
+    <state x="759" y="-957" width="1720" height="857" key="dock-window-2" timestamp="1604471651600">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="759" y="-957" width="1720" height="857" key="dock-window-2/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604471651600" />
+    <state x="1326" y="-774" width="586" height="490" key="find.popup" timestamp="1604651212678">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1326" y="-774" width="586" height="490" key="find.popup/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604651212678" />
+    <state x="1466" y="-755" key="refactoring.ChangeSignatureDialog" timestamp="1604651751210">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1466" y="-755" key="refactoring.ChangeSignatureDialog/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604651751210" />
+    <state x="1284" y="-822" width="670" height="676" key="search.everywhere.popup" timestamp="1604639199972">
+      <screen x="659" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="1284" y="-822" width="670" height="676" key="search.everywhere.popup/0.23.1440.877/659.-1057.1920.1057/-1261.-1057.1920.1057@659.-1057.1920.1057" timestamp="1604639199972" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/lib/Utils.go</url>
+          <line>21</line>
+          <option name="timeStamp" value="72" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/controller/handlers.go</url>
+          <line>34</line>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GoApplicationRunConfiguration">
+        <watch expression="*(*&quot;net/http.bodyEOFSignal&quot;)(824635392064)" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
