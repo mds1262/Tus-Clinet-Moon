@@ -105,10 +105,17 @@ func (h *Handlers) DeleteHandle(c *gin.Context) {
 	if dErr != nil {
 		resResult = &dto.ResponseDto{
 			Status:        http.StatusBadRequest,
-			ResultMessage: "The headers are not correct",
+			ResultMessage: "The body are not correct",
+		}
+	}else{
+		drErr := h.HMGet(uploadKey, lib.REDISTUSREMOVEHASHKEY).Err()
+		if drErr != nil {
+			resResult = &dto.ResponseDto{
+				Status:        http.StatusBadRequest,
+				ResultMessage: "Fail to deleted redisKey",
+			}
 		}
 	}
-
 	//c.JSON(http.StatusOK, msg)
 }
 
