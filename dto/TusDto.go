@@ -22,7 +22,7 @@ type StorageInFileInfoDto struct {
 }
 
 type ResponseDto struct {
-	Status interface{}
-	ResultMessage    interface{}
-	ProcessStatus    interface{}
+	Status        interface{}
+	ResultMessage interface{}
+	ProcessStatus interface{}
 }

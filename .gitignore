@@ -1,4 +1,5 @@
-main
+main.go
 vendor
 .idea
 logs
+go.mod

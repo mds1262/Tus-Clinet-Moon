@@ -17,33 +17,43 @@ type TusStore struct {
 //	Close()
 //}
 
-func NewTusStore(redisClient *redis.Client)tus.Store {
+func NewTusStore(redisClient *redis.Client) tus.Store {
 	return &TusStore{redisClient}
 }
 
 func (s *TusStore) Get(key string) (string, bool) {
-	result, err := s.HMGet(key,REDISTUSHASHKEY).Result()
+	result, err := s.HMGet(key, REDISTUSHASHKEY).Result()
 
 	if err != nil || result[0] == nil {
 		log.Print(err)
-		return "",false
+		return "", false
 	}
 
 	return result[0].(string), true
 }
 
 func (s *TusStore) Set(key, val string) {
-	err := s.HMSet(key, map[string]interface{}{REDISTUSHASHKEY:val}).Err()
+	var err error
 
-	if err != nil{
+	err = s.HMSet(key, map[string]interface{}{
+			REDISTUSHASHKEY: val,
+			REDISTUSDOWNHASHKEY:val,
+			REDISTUSREMOVEHASHKEY: val,
+	}).Err()
+	if err != nil {
 		log.Println(err)
 	}
+
+	//err = s.HMSet(key, map[string]interface{}{REDISTUSDOWNHASHKEY: val}).Err()
+	//if err != nil {
+	//	log.Println(err)
+	//}
 }
 
 func (s *TusStore) Delete(key string) {
 	err := s.HDel(key, REDISTUSHASHKEY).Err()
 
-	if  err == nil {
+	if err != nil {
 		log.Println(err)
 	}
 	//delete(s.m, fingerprint)

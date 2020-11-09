@@ -1,11 +1,11 @@
 package uploads
 
 import (
-	"catenoid-company/tus-client/dto"
-	"catenoid-company/tus-client/lib"
 	"fmt"
 	"github.com/eventials/go-tus"
 	"github.com/gin-gonic/gin"
+	"github.com/mds1262/Tus-Clinet-Moon/dto"
+	"github.com/mds1262/Tus-Clinet-Moon/lib"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -18,18 +18,18 @@ type TusUploads struct {
 }
 
 func (t *TusUploads) RunTus(store tus.Store) *tus.Uploader {
-	url := lib.HOST+lib.PATH
+	url := lib.HOST + lib.PATH
 	tusConfig := &tus.Config{}
 
-	uploadKey := t.Ctx.Query(lib.UPLOADQUERYKEYFILED)
+	uploadKey := t.Ctx.PostForm(lib.UPLOADQUERYKEYFILED)
 
-	if  path, isPath := store.Get(uploadKey); path != "" && isPath{
+	if path, isPath := store.Get(uploadKey); path != "" && isPath {
 		tusConfig.Store = store
 		tusConfig.Resume = true
 		tusConfig.OverridePatchMethod = false
 		tusConfig.ChunkSize = lib.CHUNKSIZE
-		url= path
-	}else {
+		url = path
+	} else {
 		tusConfig = nil
 	}
 
@@ -62,9 +62,9 @@ type TusUtilsInterface interface {
 }
 
 type TusUtils struct {
-	Ctx    *gin.Context
+	Ctx *gin.Context
 	//Result *dto.ResponseDto
-	Err    error
+	//Err    error
 }
 
 func (t *TusUtils) getTusUpload() (*tus.Upload, error) {
@@ -75,20 +75,19 @@ func (t *TusUtils) getTusUpload() (*tus.Upload, error) {
 	return upload, err
 }
 
-func (t *TusUtils) TusFileCopy() {
+func (t *TusUtils) TusFileCopy(url string, resResult *dto.ResponseDto) error {
 	var resp *http.Response
 	var err error
-	msg := make(map[string]interface{})
 
 	cu := &CustomUtils{&CustomTusUtils{C: t.Ctx}}
 
-	url := t.Ctx.PostForm(lib.FILEDOWNLOADNAME)
-
 	if url == "" {
-		msg["status"] = "Fail"
-		msg["msg"] = "The parameters are not correct"
+		resResult.Status = http.StatusBadRequest
+		resResult.ResultMessage = "The parameters are not correct"
+
+		log.Println(err)
 		//t.Result = msg
-		t.Err = err
+		//t.Err = err
 	}
 
 	setHttpInfo := map[string]string{
@@ -104,26 +103,24 @@ func (t *TusUtils) TusFileCopy() {
 
 	if err != nil {
 		log.Print(err)
-		msg["status"] = "Fail"
-		msg["msg"] = "Make sure the URL you requested is correct"
+		resResult.Status = http.StatusBadRequest
+		resResult.ResultMessage = "Make sure the URL you requested is correct"
+		//msg["status"] = "Fail"
+		//msg["msg"] = "Make sure the URL you requested is correct"
 		//t.Result = msg
-		t.Err = err
+		//t.Err = err
 	}
 
-	msg, err = cu.CreateAndCopyFromResFile(resp)
-
-	if err != nil {
-		//t.Result = msg
-		t.Err = err
-	}
+	return cu.CreateAndCopyFromResFile(resp, resResult)
 }
 
-func (t *TusUtils) DeleteContinuousFile() (*http.Response, error) {
+func (t *TusUtils) DeleteContinuousFile(uri string) (*http.Response, error) {
 	cu := &CustomUtils{&CustomTusUtils{C: t.Ctx}}
 
 	setSendToFileInfo := map[string]string{
-		lib.URI:    lib.HOST + "findFileInfo",
-		lib.METHOD: "GET",
+		lib.URI:    uri,
+		lib.METHOD: "HEAD",
+		lib.PARAMS: "",
 	}
 
 	cu.SendHttpInfo = setSendToFileInfo
@@ -153,10 +150,8 @@ func (t *TusUtils) DeleteContinuousFile() (*http.Response, error) {
 		lib.TUSCONTENTLENGTH: strconv.Itoa(fileInfoDto.Size),
 	}
 
-	deleteFileName := cu.C.PostForm(lib.FILEDELETENAME)
-
 	setSendToDelete := map[string]string{
-		lib.URI:    lib.HOST + lib.PATH + deleteFileName,
+		lib.URI:    uri,
 		lib.METHOD: "DELETE",
 		lib.PARAMS: "",
 	}
@@ -167,7 +162,7 @@ func (t *TusUtils) DeleteContinuousFile() (*http.Response, error) {
 }
 
 func (t *TusUtils) TusProcessAbort(uploader *tus.Uploader, isComplete chan bool) {
-	isDisconnect := <- t.Ctx.Writer.CloseNotify()
+	isDisconnect := <-t.Ctx.Writer.CloseNotify()
 	if isDisconnect {
 		uploader.Abort()
 	}
@@ -191,7 +186,7 @@ func (t *TusUtils) TusProcessBar(TusProcessChan *chan tus.Upload, resResult *dto
 		}
 
 		endingTime := time.Now().UTC()
-		duration  := endingTime.Sub(startingTime)
+		duration := endingTime.Sub(startingTime)
 		elapsedSec := duration.Seconds()
 		speed := (float64)(lib.CHUNKSIZE) / 1024 / 1024 / elapsedSec
 
@@ -214,11 +209,15 @@ func (t *TusUtils) TusProcessBar(TusProcessChan *chan tus.Upload, resResult *dto
 }
 
 func (t *TusUtils) TusCloseUpload(processStr chan tus.Upload, resResult *dto.ResponseDto, store tus.Store, isComplete chan bool) {
-	if processStr == nil{
-		if resResult.Status == http.StatusBadRequest{
+	if processStr == nil {
+		if resResult.Status == http.StatusBadRequest {
+			resResult.ProcessStatus = "Not File Download"
 			t.Ctx.AbortWithStatusJSON(http.StatusBadRequest, resResult)
 			return
 		}
+		resResult.ProcessStatus = "... 100%"
+		t.Ctx.JSON(http.StatusOK,resResult )
+		return
 	}
 
 	defer close(processStr)
@@ -226,17 +225,17 @@ func (t *TusUtils) TusCloseUpload(processStr chan tus.Upload, resResult *dto.Res
 	//bMsg := lib.ConvertToMarshalJson(msg)
 	//lib.ConvertToUnMarshalJson(bMsg,resResult)
 
-	if resResult.ProcessStatus == http.StatusBadRequest{
+	if resResult.ProcessStatus == http.StatusBadRequest {
 		t.Ctx.AbortWithStatusJSON(http.StatusBadRequest, resResult)
 		return
 	}
 
-	if isProcessCompete := <- isComplete; !isProcessCompete {
-		resResult.ResultMessage =  "Not Complete to continuous file"
-		t.Ctx.JSON(http.StatusOK,resResult)
+	if isProcessCompete := <-isComplete; !isProcessCompete {
+		resResult.ResultMessage = "Not Complete to continuous file"
+		t.Ctx.JSON(http.StatusOK, resResult)
 		return
 	}
 
-	store.Delete(t.Ctx.Query(lib.UPLOADQUERYKEYFILED))
-	t.Ctx.JSON(http.StatusOK,resResult)
+	store.Delete(t.Ctx.PostForm(lib.UPLOADQUERYKEYFILED))
+	t.Ctx.JSON(http.StatusOK, resResult)
 }

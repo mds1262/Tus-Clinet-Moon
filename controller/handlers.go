@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"catenoid-company/tus-client/dto"
-	"catenoid-company/tus-client/lib"
-	"catenoid-company/tus-client/upload"
 	"github.com/eventials/go-tus"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
+	"github.com/mds1262/Tus-Clinet-Moon/dto"
+	"github.com/mds1262/Tus-Clinet-Moon/lib"
+	uploads "github.com/mds1262/Tus-Clinet-Moon/upload"
 	"log"
 	"net/http"
 )
@@ -27,13 +27,14 @@ func (h *Handlers) UploadContinuousHandle(c *gin.Context) {
 
 	// 최종결과값을 처리하는 구조체
 	resResult := &dto.ResponseDto{
-			Status: http.StatusOK,
-			ResultMessage:  "Complete to continuous file",
+		Status:        http.StatusOK,
+		ResultMessage: "Complete to continuous file",
 	}
 
 	// uploadKey가 실제 존재하는지 확인
-	if hKeys,_ := h.HGetAll(c.Query(lib.UPLOADQUERYKEYFILED)).Result(); len(hKeys) == 0 {
-		c.AbortWithStatusJSON(http.StatusBadRequest,"Not find to Upload-Key")
+
+	if hKeys, _ := h.HGetAll(c.PostForm(lib.UPLOADQUERYKEYFILED)).Result(); len(hKeys) == 0 {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Not find to Upload-Key")
 		return
 	}
 
@@ -66,8 +67,8 @@ func (h *Handlers) UploadContinuousHandle(c *gin.Context) {
 
 	if err != nil {
 		resResult = &dto.ResponseDto{
-			Status: http.StatusBadRequest,
-			ResultMessage:    "Fail to continuous file",
+			Status:        http.StatusBadRequest,
+			ResultMessage: "Fail to continuous file",
 		}
 		IsComplete <- false
 	}
@@ -77,29 +78,35 @@ func (h *Handlers) UploadContinuousHandle(c *gin.Context) {
 
 func (h *Handlers) DeleteHandle(c *gin.Context) {
 	resResult := &dto.ResponseDto{
-		Status: http.StatusOK,
-		ResultMessage:    "Complete to continuous file",
+		Status:        http.StatusOK,
+		ResultMessage: "Complete to Delete Tus-uploadFile",
 	}
 
-	//var msg = map[string]interface{}{
-	//	"status": "Success",
-	//	"msg":    "Delete to upload file",
-	//}
+	uploadKey := c.PostForm(lib.UPLOADQUERYKEYFILED)
+
+	if uploadKey == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Empty UploadKey")
+		return
+	}
+
+	uriResult, err := h.HMGet(uploadKey, lib.REDISTUSREMOVEHASHKEY).Result()
+
+	if err != nil || uriResult[0] == nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Incorrect to uploadFile of uploadKey")
+		return
+	}
 
 	tu := uploads.TusUploads{TusUtils: &uploads.TusUtils{Ctx: c}}
 
 	defer tu.TusUtils.TusCloseUpload(nil, resResult, nil, nil)
 
-	_, err := tu.DeleteContinuousFile()
+	_, dErr := tu.DeleteContinuousFile(uriResult[0].(string))
 
-	if err != nil {
+	if dErr != nil {
 		resResult = &dto.ResponseDto{
-			Status: http.StatusBadRequest,
-			ResultMessage:    "The headers are not correct",
+			Status:        http.StatusBadRequest,
+			ResultMessage: "The headers are not correct",
 		}
-		//msg["status"] = "Fail"
-		//msg["msg"] = "The headers are not correct"
-		//c.AbortWithStatusJSON(http.StatusBadRequest, msg)
 	}
 
 	//c.JSON(http.StatusOK, msg)
@@ -107,25 +114,43 @@ func (h *Handlers) DeleteHandle(c *gin.Context) {
 
 func (h *Handlers) GetContinueUploadFile(c *gin.Context) {
 	resResult := &dto.ResponseDto{
-		Status: http.StatusOK,
-		ResultMessage:  "Complete to continuous file",
+		Status:        http.StatusOK,
+		ResultMessage: "Complete to Copy File",
 	}
 
-	var err error
+	uploadKey := c.PostForm(lib.UPLOADQUERYKEYFILED)
 
-	tu := uploads.TusUploads{TusUtils: &uploads.TusUtils{Ctx: c, Err: err}}
+	if uploadKey == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Empty UploadKey")
+		return
+	}
+
+	uriResult, err := h.HMGet(uploadKey, lib.REDISTUSDOWNHASHKEY).Result()
+
+	if err != nil || uriResult[0] == nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Incorrect to uploadFile of uploadKey")
+		return
+	}
+
+	//var err error
+
+	tu := uploads.TusUploads{TusUtils: &uploads.TusUtils{Ctx: c}}
 
 	defer tu.TusUtils.TusCloseUpload(nil, resResult, nil, nil)
 
-	tu.TusFileCopy()
+	cErr := tu.TusFileCopy(uriResult[0].(string), resResult)
 
-	if tu.Err != nil {
-		log.Print(tu.Err)
-		resResult = &dto.ResponseDto{
-			Status: http.StatusBadRequest,
-			ResultMessage:   "Fail to file copy",
-		}
-		//c.AbortWithStatusJSON(http.StatusBadRequest, msg)
+	if cErr != nil {
+		resResult.Status = http.StatusOK
+		resResult.ResultMessage = "Fail to FileCopy"
+		log.Print(cErr)
 	}
-	//c.JSON(http.StatusOK, msg)
+
+	rErr := h.HDel(uploadKey, lib.REDISTUSDOWNHASHKEY).Err()
+
+	if rErr != nil {
+		resResult.Status = http.StatusOK
+		resResult.ResultMessage = "Fail to deleted redisKey"
+		log.Println(rErr)
+	}
 }

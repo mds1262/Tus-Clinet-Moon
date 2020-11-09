@@ -5,13 +5,13 @@ const (
 	PATH = "tus/"
 	//PATH = "files/"
 	//PATH             = ""
-	FILEFILEDNAME    = "upload-file"
-	FILEDOWNLOADNAME = "download-url"
-	FILEDELETENAME   = "delete-name"
+	FILEFILEDNAME       = "upload-file"
+	FILEDOWNLOADNAME    = "download-url"
+	FILEDELETENAME      = "delete-name"
 	UPLOADQUERYKEYFILED = "upload_key"
-	METHOD           = "METHOD"
-	URI              = "URI"
-	PARAMS           = "PARAMS"
+	METHOD              = "METHOD"
+	URI                 = "URI"
+	PARAMS              = "PARAMS"
 )
 
 const (
@@ -19,7 +19,9 @@ const (
 	REDISSENTINELPORT     = "26379"
 	REDISSENTINELMASTER   = "kollus"
 	REDISSENTINELPOOLSIZE = "100"
-	REDISTUSHASHKEY = "Tus"
+	REDISTUSHASHKEY       = "Tus"
+	REDISTUSDOWNHASHKEY   = "TusDown"
+	REDISTUSREMOVEHASHKEY   = "TusDelete"
 )
 
 const (

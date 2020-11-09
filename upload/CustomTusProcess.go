@@ -2,9 +2,10 @@ package uploads
 
 import (
 	"bytes"
-	"catenoid-company/tus-client/lib"
 	"github.com/eventials/go-tus"
 	"github.com/gin-gonic/gin"
+	"github.com/mds1262/Tus-Clinet-Moon/dto"
+	"github.com/mds1262/Tus-Clinet-Moon/lib"
 	"io"
 	"log"
 	"net/http"
@@ -44,7 +45,7 @@ func (ct *CustomTusUtils) NewUploadFromFile() (*tus.Upload, error) {
 	file, _ := header.Open()
 
 	log.Print("[DEBUG] [NewUploadFromFile]")
-	return tus.NewUpload(file, header.Size, metadata, ct.C.Query(lib.UPLOADQUERYKEYFILED)), nil
+	return tus.NewUpload(file, header.Size, metadata, ct.C.PostForm(lib.UPLOADQUERYKEYFILED)), nil
 }
 
 func (ct *CustomTusUtils) SendToHttp(h map[string]string) (*http.Response, error) {
@@ -56,7 +57,7 @@ func (ct *CustomTusUtils) SendToHttp(h map[string]string) (*http.Response, error
 
 	client := &http.Client{}
 
-	if (params != "" && len(params) > 0) || method != "GET" {
+	if (params != "" || len(params) > 0) && method != "GET"{
 		req, err = http.NewRequest(method, uri, bytes.NewReader([]byte(params)))
 		if err != nil {
 			return nil, err
@@ -81,12 +82,11 @@ func (ct *CustomTusUtils) SendToHttp(h map[string]string) (*http.Response, error
 	return client.Do(req)
 }
 
-func (ct *CustomTusUtils) CreateAndCopyFromResFile(resp *http.Response) (map[string]interface{}, error) {
+func (ct *CustomTusUtils) CreateAndCopyFromResFile(resp *http.Response, resResult *dto.ResponseDto) error {
 	var out *os.File
 	var filepath string
 	var writeSize int64
 	var err error
-	var msg map[string]interface{}
 
 	filepath = resp.Header.Get(lib.CONTENTDISPOSITION)
 	pathArr := strings.Split(filepath, "=")
@@ -96,24 +96,28 @@ func (ct *CustomTusUtils) CreateAndCopyFromResFile(resp *http.Response) (map[str
 	out, err = os.Create(filepath)
 
 	if err != nil {
-		log.Println(err)
-		msg["status"] = "Fail"
-		msg["msg"] = "There was a problem creating the file"
-		return msg, err
+		resResult.Status = http.StatusBadRequest
+		resResult.ResultMessage = "There was a problem creating the file"
+		//log.Println(err)
+		//msg["status"] = "Fail"
+		//msg["msg"] = "There was a problem creating the file"
+		return err
 	}
 	defer out.Close()
 
 	writeSize, err = io.Copy(out, resp.Body)
 	if err != nil {
-		msg["status"] = "Fail"
-		msg["msg"] = "A problem occurred while writing the file"
-		log.Println(err)
-		return msg, err
+		resResult.Status = http.StatusBadRequest
+		resResult.ResultMessage = "A problem occurred while writing the file"
+		//msg["status"] = "Fail"
+		//msg["msg"] = "A problem occurred while writing the file"
+		//log.Println(err)
+		return err
 	}
 
 	log.Println(writeSize)
 
-	return msg, nil
+	return nil
 }
 
 //func (ct *CustomTusUtils) UploadFileCopy()  {

@@ -1,9 +1,10 @@
 package main
 
 import (
-	"catenoid-company/tus-client/controller"
-	"catenoid-company/tus-client/lib"
 	"github.com/gin-gonic/gin"
+	"github.com/mds1262/Tus-Clinet-Moon/controller"
+	"github.com/mds1262/Tus-Clinet-Moon/lib"
+
 	"log"
 	"runtime"
 )
@@ -12,7 +13,7 @@ import (
 2020.11.06
 Writer: Deuksoo Moon
 Content: Tus을 이용한 파일 어이받기 서비스
- */
+*/
 
 func main() {
 	// Log 설정
@@ -48,7 +49,6 @@ func main() {
 	}
 
 	err := app.Run(":8082")
-
 
 	if err != nil {
 		log.Print(err)
